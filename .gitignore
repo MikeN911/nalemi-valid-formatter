@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# Build artifacts & packages
+out/
+dist/*.map
+*.vsix
+
+# Temporary & test files
+.vscode-test/
+
+# OS metadata
+.DS_Store
+Thumbs.db

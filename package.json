@@ -1,0 +1,137 @@
+{
+	"name": "nalemi-valid-formatter",
+	"displayName": "Nalemi Valid Formatter",
+	"description": "Linter a kontrola formátování PHP kódu a whitespaces (prázdné řádky, pozice závorek, odsazení) pro VS Code a Antigravity IDE",
+	"version": "0.1.3",
+	"publisher": "nalemi",
+	"engines": {
+		"vscode": "^1.80.0"
+	},
+	"categories": [
+		"Linters",
+		"Programming Languages"
+	],
+	"keywords": [
+		"php",
+		"linter",
+		"formatter",
+		"whitespace",
+		"codestyle",
+		"1tbs"
+	],
+	"main": "./dist/extension.js",
+	"activationEvents": [
+		"onLanguage:php"
+	],
+	"contributes": {
+		"commands": [
+			{
+				"command": "nalemiValidFormatter.validateActiveDocument",
+				"title": "Nalemi Formatter: Zkontrolovat formátování aktuálního souboru"
+			},
+			{
+				"command": "nalemiValidFormatter.fixAllWhitespace",
+				"title": "Nalemi Formatter: Opravit formátování a bílé znaky v aktuálním souboru"
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Nalemi Valid Formatter",
+			"properties": {
+				"nalemiValidFormatter.enable": {
+					"type": "boolean",
+					"default": true,
+					"description": "Povolit nebo zakázat kontrolu formátování kódu."
+				},
+				"nalemiValidFormatter.validateOn": {
+					"type": "string",
+					"enum": [
+						"type",
+						"save"
+					],
+					"default": "type",
+					"description": "Kdy provádět validaci: při psaní (type) nebo pouze při uložení (save)."
+				},
+				"nalemiValidFormatter.php.openingBraceSameLine": {
+					"type": "boolean",
+					"default": true,
+					"description": "Vyžadovat otevírací závorku '{' na stejném řádku u tříd, rozhraní, traitů a metod (1TBS / K&R styl)."
+				},
+				"nalemiValidFormatter.php.controlStructureBraceSameLine": {
+					"type": "boolean",
+					"default": true,
+					"description": "Vyžadovat otevírací závorku '{' na stejném řádku u řídicích struktur (if, elseif, else, while, for, foreach, switch, do, try, catch)."
+				},
+				"nalemiValidFormatter.php.blankLineAfterClassBrace": {
+					"type": "integer",
+					"default": 1,
+					"minimum": 0,
+					"maximum": 5,
+					"description": "Požadovaný počet prázdných řádků ihned pod otevírací závorkou třídy (výchozí: 1)."
+				},
+				"nalemiValidFormatter.php.blankLineAfterMethodBrace": {
+					"type": "integer",
+					"default": 1,
+					"minimum": 0,
+					"maximum": 5,
+					"description": "Požadovaný počet prázdných řádků ihned pod otevírací závorkou metody/funkce (výchozí: 1). Jednořádkové metody jsou ignorovány."
+				},
+				"nalemiValidFormatter.php.blankLinesBetweenMethods": {
+					"type": "integer",
+					"default": 2,
+					"minimum": 0,
+					"maximum": 10,
+					"description": "Požadovaný počet prázdných řádků mezi metodami uvnitř třídy (výchozí: 2)."
+				},
+				"nalemiValidFormatter.common.indentType": {
+					"type": "string",
+					"enum": [
+						"tabs",
+						"spaces",
+						"off"
+					],
+					"default": "tabs",
+					"description": "Požadovaný typ odsazení: 'tabs' (tabulátory), 'spaces' (mezery) nebo 'off' (nekontrolovat)."
+				},
+				"nalemiValidFormatter.common.noTrailingWhitespace": {
+					"type": "boolean",
+					"default": true,
+					"description": "Zakázat prázdné znaky na konci řádků (trailing whitespace)."
+				},
+				"nalemiValidFormatter.common.spaceBeforeOpeningBrace": {
+					"type": "boolean",
+					"default": true,
+					"description": "Vyžadovat právě jednu mezeru před otevírací složenou závorkou '{' (např. 'function foo() {')."
+				},
+				"nalemiValidFormatter.common.emptyLineIndentation": {
+					"type": "string",
+					"enum": [
+						"tabs",
+						"allow-empty-or-tabs",
+						"empty",
+						"off"
+					],
+					"default": "tabs",
+					"description": "Odsazení prázdných řádků pro zachování úrovně (tabs: tabulátory dle úrovně zanoření, allow-empty-or-tabs: prázdné i tabulátory, empty: bez bílých znaků, off: nekontrolovat)."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run build",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"build": "node esbuild.js --production",
+		"dev": "node esbuild.js",
+		"test": "node --test dist/test.js",
+		"package": "node package-vsix.js patch",
+		"package:minor": "node package-vsix.js minor",
+		"package:major": "node package-vsix.js major"
+	},
+	"devDependencies": {
+		"@types/node": "^22.0.0",
+		"@types/vscode": "^1.80.0",
+		"esbuild": "^0.25.0",
+		"typescript": "^5.7.0"
+	}
+}
